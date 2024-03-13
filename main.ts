@@ -1,16 +1,12 @@
-// import db from "./database/connction";
-import express, { json, Request } from "express";
-// import { json } from "stream/consumers";
-
+import express, { json } from "express";
 const app = express();
+app.use(json);
 
-
+// respond with "hello world" when a GET request is made to the homepage
 app.get("/", (req, res) => {
-  res.send({
-    greet: "hello fronm the server",
-  });
+  res.send("hello world");
 });
 
+app.listen(4000, () => console.log("running the server..."));
 
-
-app.listen(3000, () => console.log("running the server..."));
+console.log("bobo");
