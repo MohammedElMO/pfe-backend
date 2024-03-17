@@ -1,12 +1,12 @@
-import express, { json } from "express";
-const app = express();
-app.use(json);
+import express from "express"
+import userRouter from "./routesControllers/User.routes"
+import { json } from "express"
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+const app = express()
 
-app.listen(4000, () => console.log("running the server..."));
+app.use(json())
+app.use("/api",userRouter)
 
-console.log("bobo");
+
+
+app.listen(3000, () => console.log("runniing..."))

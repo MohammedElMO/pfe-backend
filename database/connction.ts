@@ -12,7 +12,7 @@ import mysql from "mysql2/promise.js";
 //   keepAliveInitialDelay: 0,
 //   enableKeepAlive: true,
 // });
-export const pool = mysql.createPool({
+export const db = mysql.createPool({
   host: "localhost",
   password: "Password#1",
   user: "root",
