@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=.env --watch --import tsx main.ts",
+    "start": "node --trace-warnings --env-file=.env --watch --import tsx main.ts",
     "serve": "tsx main.ts"
   },
   "keywords": [],
@@ -25,11 +25,14 @@
     "mailersend": "2.2.0",
     "mysql2": "3.9.2",
     "tsx": "4.7.1",
-    "typescript": "5.4.2"
+    "typescript": "5.4.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.11.25"
+    "@types/node": "^20.11.25",
+    "@types/uuid": "^9.0.8"
   }
 }

@@ -1,20 +1,20 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2"
+import { RowDataPacket } from "mysql2"
 import { db } from "../../database/connction"
 
 export type User = {
   email: string
   password: string
-  id: number
-  name:string
+  userId: number
+  fullName: string
 }
-
+// type ArrayElem<T> = T extends (infer U)[] ? U : never
 export const getOneUserByCredentials = async (
-  email: string,
-  password: string,
+  fullName: string,
+  // password: string,
 ) => {
   const [data] = await db.query<RowDataPacket[]>(
-    "SELECT * from User WHERE email = ? AND password= ? ",
-    [email, password],
+    "SELECT userId,fullName,password from User WHERE fullName = ? ",
+    [fullName],
   )
-  return data as User[]
+  return data 
 }
