@@ -1,5 +1,6 @@
 import express from "express"
-import userRouter from "./routesControllers/User.routes"
+import authRouter from "./controllers/auth"
+import userRouter from "./controllers/user"
 import { json } from "express"
 import cors from "cors"
 const app = express()
@@ -7,11 +8,12 @@ const app = express()
 app.use(json())
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
   }),
 )
 
 
-app.use("/api", userRouter)
+app.use("/api", authRouter)
+app.use("/api/user", userRouter)
 
 app.listen(3000, () => console.log("runniing..."))
