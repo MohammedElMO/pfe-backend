@@ -1,23 +1,24 @@
 import { Router } from "express"
-import db from "../database/prisma/client"
+import db from "../prisma/client"
 
 const userRouter = Router()
 
-userRouter.post("/username", async (req, res) => {
-  const { user } = req.body
-  console.log(user)
+userRouter.put("/username", async (req, res) => {
+  const { username } = req.body
 
-  const username = await db.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
-      username: user,
+      uesrname: username,
     },
     select: {
-      username: true,
+      uesrname: true,
     },
   })
-  if (!username) return res.json({ userFound: false }).status(200)
+  console.log(user)
+  if (!user) return res.json({ userFound: false }).status(200)
 
   return res.json({ userFound: true }).status(200)
 })
+
 
 export default userRouter
