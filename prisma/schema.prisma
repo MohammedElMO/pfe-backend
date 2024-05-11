@@ -1,0 +1,150 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ROLE {
+  id_role  Int     @id @unique
+  nom_role String? @db.VarChar(50)
+
+  user User[] @relation("fk_utilisateur_role")
+}
+
+model User {
+  id_utilisateur       Int    @id @default(autoincrement())
+  nom_utilisateur      String @db.VarChar(25)
+  prenom_utilisateur   String @db.VarChar(25)
+  uesrname             String @unique @db.VarChar(100)
+  password_utilisateur String @db.VarChar(255)
+  email_utilisateur    String @db.VarChar(50)
+
+  id_role      Int?
+  id_pharmacie Int? @unique
+  id_createur  Int? @unique
+
+  role ROLE? @relation("fk_utilisateur_role", references: [id_role], fields: [id_role])
+
+  pharmacie   Pharamcy? @relation("fk_pharmacy_owner")
+  user User?     @relation("fk_createur_utilisateur")
+  createur    User?     @relation("fk_createur_utilisateur", references: [id_utilisateur], fields: [id_createur])
+
+  favoriser Favored[]
+  Preferer  Prefer[]
+  createdAt DateTime  @default(now()) @map("cree_a")
+
+  @@index([id_utilisateur])
+  @@map("UTILISATEUR")
+}
+
+model Pharamcy {
+  id_pharmacie         Int      @id @default(autoincrement())
+  nom_pharmacie        String   @db.VarChar(50)
+  ville_pharmacie      String   @db.VarChar(50)
+  adresse_pharmacie    String   @db.VarChar(50)
+  adresse_email        String   @db.VarChar(50)
+  fix_pharmacie        String   @db.VarChar(50)
+  lat_pharmacie        Float
+  lot_pharmacie        Float
+  Heure_ouverture      DateTime @db.Time()
+  Heure_fermeture      DateTime @db.Time()
+  id_creater_pharmacie Int      @unique
+
+  user User @relation("fk_pharmacy_owner", references: [id_utilisateur], fields: [id_creater_pharmacie], onDelete: Cascade)
+
+  Contain   Contain[]
+  factures  Bill[]
+  favoriser Favored[]
+
+  @@map("PHARMACIE")
+}
+
+model Contain {
+  id_pharmacie Int
+  pharmacie    Pharamcy @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
+
+  id_medicament Int
+  medicament    Medicine @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
+
+  quantite Int
+
+  @@id([id_pharmacie, id_medicament])
+  @@map("CONTENIR")
+}
+
+model Medicine {
+  id_medicament          Int    @id 
+  nom_medicament         String @db.VarChar(30)
+  dosage                 String @db.VarChar(50)
+  description_medicament String @db.Text
+  type                   String @db.VarChar(20)
+  tva                    Float
+  prix                   Float
+
+  Contain  Contain[]
+  Compose  Compose[]
+  Preferer Prefer[]
+
+  @@map("MEDICAMENT")
+}
+
+model Compose {
+  id_facture Int
+  facture    Bill @relation(references: [id_facture], fields: [id_facture], onDelete: Cascade, onUpdate: Cascade)
+
+  id_medicament Int
+  medicament    Medicine @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
+
+  quantite Int
+
+  @@id([id_facture, id_medicament])
+  @@map("COMPOSER")
+}
+
+model Bill {
+  id_facture    Int      @id  @default(autoincrement())
+  date_facture  DateTime @db.Date
+  montant_total Float
+
+  id_pharmacie Int
+  pharmacie    Pharamcy @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
+
+  Compose Compose[]
+
+  @@map("FACTURE")
+}
+
+model Favored {
+  id_utilisateur Int
+  user    User @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
+
+  id_pharmacie Int
+  pharmacie    Pharamcy @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
+
+  date_favorisation DateTime @db.Date
+
+  @@id([id_pharmacie, id_utilisateur])
+  @@map("FAVORISER")
+}
+
+model Prefer {
+  id_utilisateur Int
+  user    User @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
+
+  id_medicament Int
+  medicament    Medicine @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
+
+  date_preferation DateTime @db.Date
+
+  @@id([id_medicament, id_utilisateur])
+  @@map("PREFERER")
+}
