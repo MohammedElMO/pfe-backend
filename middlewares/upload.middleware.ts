@@ -13,6 +13,5 @@ export const uploadAvatar = asyncHandler(async (req, res) => {
   // const client = new UploadClient(uploadcareAuthSchema)
 
   const b =  await buffer(req.body)
-  console.log(b)
   res.send("ol")
 })

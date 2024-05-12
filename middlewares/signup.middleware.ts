@@ -20,7 +20,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       user
         .then((response) => {
           let jwtToken = jwt.sign(
-            { userId: response.id_createur, username: response.uesrname },
+            { userId: response.id_utilisateur, username: response.uesrname },
             process.env.JWT_SECRET!,
             {
               expiresIn: "1d",
@@ -28,7 +28,7 @@ export const registerUser = asyncHandler(async (req, res) => {
           )
 
           res.status(201).json({
-            accessToken: jwtToken,
+            jwtToken,
             message: "user successfully created!",
           })
         })

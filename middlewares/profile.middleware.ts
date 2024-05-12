@@ -5,6 +5,7 @@ import db from "../prisma/client"
 export const getPofiler = asyncHandler(
   async (req: Request & any, res: Response) => {
     // req.userData -- data
+    console.log(req.userData.userId)
     const userProfile = await db.user.findUnique({
       where: {
         id_utilisateur: req.userData.userId,
@@ -16,7 +17,7 @@ export const getPofiler = asyncHandler(
         email_utilisateur: true,
       },
     })
-    if (!userProfile) res.status(401).json("no user")
+    if (!userProfile) res.status(404).json("no user")
 
     res.json(userProfile).status(200)
   },
