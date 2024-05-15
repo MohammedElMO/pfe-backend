@@ -3,7 +3,9 @@ import authRouter from "./controllers/auth"
 import userRouter from "./controllers/user"
 import { json } from "express"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 import ProfileRouter from "./controllers/profile"
+import FavouritesRouter from "./controllers/favourites"
 const app = express()
 
 app.use(
@@ -12,9 +14,9 @@ app.use(
   }),
 )
 app.use(json())
+app.use(cookieParser())
 
-app.use("/api", authRouter,ProfileRouter)
+app.use("/api", authRouter, ProfileRouter, FavouritesRouter)
 app.use("/api/user", userRouter)
-// app.use("/api", uploadRouter)
 
 app.listen(3000, () => console.log("runniing..."))

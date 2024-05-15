@@ -10,9 +10,9 @@ type LoginCredentialsT = {
 }
 
 export const login = asyncHandler(
-  async (req: Request<any, any, LoginCredentialsT>, res: Response) => {
+  async (req: Request<LoginCredentialsT>, res: Response) => {
     if (!req.body.username || !req.body.password) {
-      res.status(401).json({
+      res.status(400).json({
         message: "no data was sent",
       })
     }
@@ -28,7 +28,7 @@ export const login = asyncHandler(
       },
     })
     if (!user) {
-      res.status(401).json({ message: "authtification failed" })
+      res.status(404).json({ message: "user not found" })
       return
     }
 
@@ -38,7 +38,7 @@ export const login = asyncHandler(
     )
 
     if (!isCorrectPass)
-      res.status(401).json({
+      res.status(400).json({
         message: "password Incorrect",
       })
     else {
@@ -52,6 +52,19 @@ export const login = asyncHandler(
           expiresIn: "1d",
         },
       )
+      const refreshToken = jwt.sign(
+        {
+          username: user.uesrname,
+        },
+        process.env.REFRESH_TOKEN_SECRET!,
+        { expiresIn: "1d" },
+      )
+      res.cookie("jwtRefresh", refreshToken, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      })
 
       res.json({ jwtToken }).status(200)
     }
