@@ -13,7 +13,7 @@ export const AuthtokenVerification = (
     console.log(decoded)
     next()
   } catch (err) {
-    return res.status(401).json({
+    return res.status(400).json({
       message: "Authentification Failed",
     })
   }

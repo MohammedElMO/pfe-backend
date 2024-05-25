@@ -24,7 +24,7 @@ model User {
   id_utilisateur       Int    @id @default(autoincrement())
   nom_utilisateur      String @db.VarChar(25)
   prenom_utilisateur   String @db.VarChar(25)
-  uesrname             String @unique @db.VarChar(100)
+  username             String @unique @db.VarChar(100)
   password_utilisateur String @db.VarChar(255)
   email_utilisateur    String @db.VarChar(50)
 
@@ -70,10 +70,10 @@ model Pharamcy {
 
 model Contain {
   id_pharmacie Int
-  pharmacie    Pharamcy @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
+  pharmacie    Pharamcy? @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
 
   id_medicament Int
-  medicament    Medicine @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
+  medicament    Medicine? @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
 
   quantite Int
 
@@ -82,7 +82,7 @@ model Contain {
 }
 
 model Medicine {
-  id_medicament          Int    @id 
+  id_medicament          Int    @id @default(autoincrement())
   nom_medicament         String @db.VarChar(30)
   dosage                 String @db.VarChar(50)
   description_medicament String @db.Text
@@ -112,6 +112,7 @@ model Compose {
 
 model Bill {
   id_facture    Int      @id  @default(autoincrement())
+  
   date_facture  DateTime @db.Date
   montant_total Float
 
@@ -125,12 +126,12 @@ model Bill {
 
 model Favored {
   id_utilisateur Int
-  user    User @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
+  user    User? @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
 
   id_pharmacie Int
-  pharmacie    Pharamcy @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
+  pharmacie    Pharamcy? @relation(references: [id_pharmacie], fields: [id_pharmacie], onDelete: Cascade, onUpdate: Cascade)
 
-  date_favorisation DateTime @db.Date
+  date_favorisation  DateTime  @default(now())
 
   @@id([id_pharmacie, id_utilisateur])
   @@map("FAVORISER")
@@ -138,12 +139,12 @@ model Favored {
 
 model Prefer {
   id_utilisateur Int
-  user    User @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
+  user    User? @relation(references: [id_utilisateur], fields: [id_utilisateur], onDelete: Cascade, onUpdate: Cascade)
 
   id_medicament Int
-  medicament    Medicine @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
+  medicament    Medicine? @relation(references: [id_medicament], fields: [id_medicament], onDelete: Cascade, onUpdate: Cascade)
 
-  date_preferation DateTime @db.Date
+  date_preferation  DateTime  @default(now())
 
   @@id([id_medicament, id_utilisateur])
   @@map("PREFERER")

@@ -28,7 +28,8 @@
     "mailersend": "2.2.0",
     "mysql2": "^3.9.7",
     "tsx": "4.7.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@authentication/cookie": "^0.1.2",
