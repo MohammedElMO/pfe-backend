@@ -7,9 +7,9 @@
   "scripts": {
     "start": "node --trace-warnings --env-file=.env --watch --import tsx main.ts",
     "serve": "tsx watch main.ts",
-    "db:push": "npx prisma db push --schema ./database/prisma/schema.prisma",
-    "db:generate": "npx prisma generate --schema ./database/prisma/schema.prisma",
-    "db:migrate": "npx prisma migrate dev --schema ./database/prisma/schema.prisma"
+    "db:push": "npx prisma db push --schema ./prisma/schema.prisma",
+    "db:generate": "npx prisma generate --schema ./prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --schema ./prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
