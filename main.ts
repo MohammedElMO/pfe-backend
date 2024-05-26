@@ -21,4 +21,4 @@ app.use(cookieParser())
 app.use("/api", authRouter, ProfileRouter, FavouritesRouter, PharmacyCity)
 app.use("/api/user", userRouter)
 
-app.listen(3000, () => console.log("runniing..."))
+app.listen(process.env.PORT || 3000, () => console.log("runniing..."))
