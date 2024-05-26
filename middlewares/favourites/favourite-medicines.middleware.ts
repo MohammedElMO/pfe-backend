@@ -152,6 +152,18 @@ export const CreateFavouritePharmacy = asyncHandler(
   async (req: Request & any, res: Response) => {
     // req.userData -- data
     try {
+      const existed = await db.favored.findUnique({
+        where: {
+          id_pharmacie_id_utilisateur: {
+            id_utilisateur: req.userData.userId,
+            id_pharmacie: req.body.pharmacieId,
+          },
+        },
+      })
+      if (existed) {
+        res.status(400).json("already exist")
+        return
+      }
       await db.favored.create({
         data: {
           id_utilisateur: req.userData.userId,
@@ -159,9 +171,9 @@ export const CreateFavouritePharmacy = asyncHandler(
         },
       })
 
-      res.json({ success: "success" }).status(201)
+      res.status(201).json({ success: "success" })
     } catch (error) {
-      res.json("err occured").status(500)
+      res.status(500).json("err occured")
     }
   },
 )

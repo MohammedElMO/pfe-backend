@@ -6,11 +6,6 @@ export const getAllCities = asyncHandler(
   async (req: Request & any, res: Response) => {
     try {
       const pharmacies = await db.pharamcy.findMany()
-      const favoredIds = await db.favored.findMany({
-        select: {
-          id_pharmacie: true,
-        },
-      })
 
       // Transform data into the desired structure
       const groupedPharmacies = pharmacies.reduce<any>((acc, pharmacy) => {
@@ -46,8 +41,27 @@ export const getAllCities = asyncHandler(
       }, {})
 
       if (!pharmacies) res.status(404).json("no cities")
-      res.status(200).json({ groupedPharmacies, favoredIds })
+      res.status(200).json(groupedPharmacies)
     } catch (error) {
+      res.status(500).json("err occured try again")
+    }
+  },
+)
+export const getFavouriteIds = asyncHandler(
+  async (req: Request & any, res: Response) => {
+    try {
+      const favoredIds = await db.favored.findMany({
+        where: {
+          id_utilisateur: req.userData.userId,
+        },
+        select: {
+          id_pharmacie: true,
+        },
+      })
+      if (!favoredIds) res.status(404).json("no cities")
+      res.status(200).json(favoredIds)
+    } catch (error) {
+      console.log(error)
       res.status(500).json("err occured try again")
     }
   },
@@ -76,4 +90,3 @@ export const getPharmacyById = asyncHandler(
     }
   },
 )
-
