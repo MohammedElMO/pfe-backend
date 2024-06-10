@@ -1,17 +1,17 @@
 import express from "express"
-import authRouter from "./controllers/auth"
-import userRouter from "./controllers/user"
+import authRouter from "./routes/auth"
+import userRouter from "./routes/user"
 import { json } from "express"
 import cors from "cors"
 // import cookieParser from "cookie-parser"
-import ProfileRouter from "./controllers/profile"
-import FavouritesRouter from "./controllers/favourites"
-import PharmacyCity from "./controllers/city"
+import ProfileRouter from "./routes/profile"
+import FavouritesRouter from "./routes/favourites"
+import PharmacyCity from "./routes/city"
 const app = express()
 
 app.use(
   cors({
-    origin: "https://pfe-khaliha-3la-lah.vercel.app/",
+    origin: "*",
   }),
 )
 // "http://localhost:5173"
